@@ -319,6 +319,13 @@
             <div class="space-y-6">
                 
                 <div class="card">
+                    <h2 class="card-header">Resumen del Sistema</h2>
+                    <ul id="systemSummary" class="details-list">
+                        <li class="color-yellow">Esperando motor de síntesis...</li>
+                    </ul>
+                </div>
+
+                <div class="card">
                     <h2 class="card-header">Detalles de la Voz</h2>
                     <ul id="voiceDetails" class="details-list">
                         <li>Selecciona una voz para ver sus detalles.</li>
@@ -396,6 +403,17 @@
                 option.value = i;
                 voiceSelect.appendChild(option);
             });
+
+            const uniqueLangs = new Set(voices.map(v => v.lang)).size;
+            const localCount = voices.filter(v => v.localService).length;
+            const defaultVoice = voices.find(v => v.default)?.name || 'Ninguna';
+
+            document.getElementById('systemSummary').innerHTML = `
+                <li><strong>Total de Voces:</strong> ${voices.length}</li>
+                <li><strong>Idiomas Diferentes:</strong> ${uniqueLangs}</li>
+                <li><strong>Procesamiento Local:</strong> ${localCount} de ${voices.length}</li>
+                <li><strong>Voz por Defecto:</strong> ${defaultVoice}</li>
+            `;
 
             updateVoiceDetails();
             logEvent('Sistema', `Cargadas ${voices.length} voces.`);
